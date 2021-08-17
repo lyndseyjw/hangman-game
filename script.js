@@ -22,18 +22,33 @@ var words = ["variable","array", "modulus", "object", "function", "string", "boo
 // The init function is called when the page loads 
 function init() {
  
+  var storedWins = localStorage.getItem("wins");
+
+  if (storedWins !==null) {
+
+    win.textContent = storedWins;
+  }
+
+  var storedLosses = localStorage.getItem("losses");
+
+  if (storedLosses !==null) {
+
+    lose.textContent = storedLosses;
+  }
 }
 
 // The startGame function is called when the start button is clicked
 function startGame() {
  
   // Prevents start button from being clicked when round is in progress
-
+  renderBlanks();
+  startTimer();
 }
 
 // The winGame function is called when the win condition is met
 function winGame() {
  
+  
 }
 
 // The loseGame function is called when timer reaches 0
@@ -57,12 +72,23 @@ function startTimer() {
 
 // Creates blanks on screen
 function renderBlanks() {
+
   // Randomly picks word from words array
- 
+  var randomWord = words[Math.floor(Math.random()*words.length)];
+  console.log(randomWord);
+  lettersInChosenWord = randomWord.split('');
+
   // Uses loop to push blanks to blankLetters array
+  for (var i = 0; i < lettersInChosenWord.length; i++) {
+
+
+    blanksLetters.push("_");
+  }
 
   // Converts blankLetters array into a string and renders it on the screen
- 
+  wordBlank.textContent = blanksLetters.join(" ");
+
+  return
 }
 
 // Updates win count on screen and sets win count to client storage
@@ -99,17 +125,38 @@ function checkWin() {
 }
 
 // Tests if guessed letter is in word and renders it to the screen.
-function checkLetters(letter) {
+function checkLetters(key) {
   
+  for (var i = 0; i < lettersInChosenWord.length; i++) {
+
+    if (key) {
+
+      wordBlank.textContent = "";
+      wordBlank.textContent = key;
+
+    } 
+  }
 }
 
 // Attach event listener to document to listen for key event
 document.addEventListener("keydown", function(event) {
+  
   // If the count is zero, exit function
- 
+  if (timerCount === 0) {
+
+    return
+  }
+
   // Convert all keys to lower case
+  var key = event.key.toLowerCase();
  
   // Test if key pushed is letter
+  var alphabet = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+  if (alphabet.includes(key)) {
+
+    checkLetters(key);
+  }
  
 });
 
